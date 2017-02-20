@@ -4,8 +4,9 @@
   "description": "Get scores and beyond",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --config webpack.config.js",
-    "postinstall": "npm install -g webpack"
+    "dev": "webpack --config webpack.config.js",
+    "postinstall": "npm install -g webpack",
+    "clean": "rm -rf ./dist"
   },
   "keywords": [
     "football",
