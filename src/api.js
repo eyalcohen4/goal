@@ -1,4 +1,5 @@
 import request from 'request';
+import chalk from 'chalk';
 
 class API {
     constructor() {
@@ -9,34 +10,60 @@ class API {
     }
     
     sendRequest(path, data, options) {
-        return new Promise((resolve, reject) => {
-            request(`${this.BASE_URL}/${path}`, data, (error, response, body) => {
-                if(!error && response.statusCode === 200) {
-                    console.log(body);
-                    resolve(body);
-                } else {
-                    console.log(error);
-                    reject(error);
-                }
-             });
-        });
+        if (!options) {
+            return new Promise((resolve, reject) => { 
+                request(`${this.BASE_URL}/${path}`, data, (error, response, body) => {
+                    if (!error && response.statusCode === 200) {
+                        resolve(body);
+                    } else {
+                        console.log(error);
+                        reject(error);
+                    }
+                });
+            });
+        }
+            if (options && options.crest) {
+                return new Promise((resolve, reject) => {
+                    request(path, data, (error, response, body) => {
+                        if (!error && response.statusCode === 200) {
+                            resolve(body);
+                        } else {
+                            console.error(chalk.red(error));
+                            reject(error);
+                        }
+                    });
+            });
+            }
     }
 
     getCompetitionTable(id) {
-        this.sendRequest(`competitions/${id}/leagueTable`).then(response => {
+        return this.sendRequest(`competitions/${id}/leagueTable`).then(response => {
             if (!response) {
-                console.error(`response not found`);
+                console.error(chalk.red(`response not found`));
             } 
 
             return JSON.parse(response); 
         }, error => { 
-            console.log(`error: ${error}`); 
+            console.error(`error: ${error}`); 
             return error 
         })
     }
 
     getFixture() {
 
+    }
+
+    getCrest(uri) {
+       return this.sendRequest(uri, null, {crest: true}).then(response => {
+           if (!response) {
+               console.error(`response not found`);
+           }
+
+           return response;
+       }, error => {
+           console.error(`error: ${error}`.red)
+           return error;
+       })
     }
 
 }

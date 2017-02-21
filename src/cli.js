@@ -1,7 +1,6 @@
-import processArgs from 'helpers/processArgs';
+import processArgs from 'helpers/process-args';
 
 import table from 'commands/table';
-
 
 let args = processArgs(process.argv);
 
