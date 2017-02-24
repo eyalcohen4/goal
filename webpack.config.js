@@ -27,7 +27,7 @@ module.exports = {
           path.resolve(__dirname, "./src")
         ],
         exclude: [
-          /node_modules/
+          'node_modules'
         ],
         // these are matching conditions, each accepting a regular expression or string
         // test and include have the same behavior, both must be matched

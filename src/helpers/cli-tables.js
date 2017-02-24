@@ -1,14 +1,16 @@
 import Tables from 'cli-table';
+import chalk from 'chalk';
 import api from '../api';
-import png from 'console-png';
 
 export default function standings(teams, numOfTeams) {
-    if (!numOfTeams) { 
-        let table = new Tables({
-            head: ['Position', 'Club', 'Played', 'Won', 'Draw', 'Lost', 'GF', 'GA', 'GD', 'Points']
-        });
+    let table = new Tables({
+        head: ['Position', 'Club', 'Played', 'Won', 'Draw', 'Lost', 'GF', 'GA', 'GD', 'Points']
+    });
         
-        for (let team of teams) {
+    if (numOfTeams) {     
+        for (let indexOfTeams = 0; indexOfTeams < numOfTeams; indexOfTeams++) {
+            let team = teams[indexOfTeams];
+
             table.push([
                 team.position, 
                 team.teamName, 
@@ -25,4 +27,22 @@ export default function standings(teams, numOfTeams) {
 
         return table.toString();
     }
+
+    for (let team of teams) {
+        table.push([
+            team.position, 
+            team.teamName, 
+            team.playedGames, 
+            team.wins, 
+            team.draws, 
+            team.losses,
+            team.goals,
+            team.goalsAgainst,
+            team.goalDifference,
+            team.points
+        ])
+    }
+
+    return table.toString();
+    
 }
