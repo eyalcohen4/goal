@@ -1,8 +1,11 @@
+import chalk from 'chalk';
+
 import api from '../api';
 import tables from '../helpers/cli-tables';
 
 class Table {
     constructor() {
+        this.leagueCaption;
         this.competition = null;
         this.numOfTeams = null;
         this.table = null;
@@ -11,7 +14,7 @@ class Table {
     getCompetition(args) {
         args.league ? this.competition = args.league : null;
         args.number ? this.numOfTeams = args.number : null;
-        this.getTable();
+        this.getTable();    
     } 
 
     getTable() {
@@ -27,13 +30,14 @@ class Table {
             return null;
         }
 
-       this.table = tables(data.standing, this.numOfTeams);
+       this.leagueCaption = data.leagueCaption;
+       this.table = tables.standings(data.standing, this.numOfTeams);
        this.displayTable();
     }
 
     displayTable() {
         if (this.table) { 
-            console.log(this.table);
+            console.log(`${this.leagueCaption} \n ${this.table}`);
         }
     }
 }

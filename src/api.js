@@ -38,32 +38,20 @@ class API {
 
     getCompetitionTable(id) {
         return this.sendRequest(`competitions/${id}/leagueTable`).then(response => {
-            if (!response) {
-                console.error(chalk.red(`response not found`));
-            } 
-
             return JSON.parse(response); 
         }, error => { 
-            console.error(`error: ${error}`); 
+            console.error(emoji.get('confused'), chalk.red(` - Can't Get Data, So Sorry!`));
             return error 
         })
     }
 
-    getFixture() {
-
-    }
-
-    getCrest(uri) {
-       return this.sendRequest(uri, null, {crest: true}).then(response => {
-           if (!response) {
-               console.error(`response not found`);
-           }
-
-           return response;
-       }, error => {
-           console.error(`error: ${error}`.red)
-           return error;
-       })
+    getFixturesByCompetition(id) {
+        return this.sendRequest(`competitions/${id}/fixtures`).then(response => {
+            return JSON.parse(response);
+        }, error => {
+            console.error(emoji.get('confused'), chalk.red(` - Can't Get Data, So Sorry!`));
+            return error;            
+        })
     }
 
 }

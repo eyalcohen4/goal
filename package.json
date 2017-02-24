@@ -36,6 +36,7 @@
     "console-png": "^1.1.0",
     "dotenv-webpack": "1.4.x",
     "minimist": "1.2.x",
+    "node-emoji": "^1.5.1",
     "request": "2.79.x"
   }
 }
