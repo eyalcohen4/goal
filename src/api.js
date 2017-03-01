@@ -13,12 +13,9 @@ class API {
     }
     
     sendRequest(path, data, options) {
-        if (!options) {
             return new Promise((resolve, reject) => { 
                 request(`${this.BASE_URL}/${path}`, data, (error, response, body) => {
-                    console.log(error, response)
                     if (!error && response.statusCode === 200) {
-                        console.log(body);
                         resolve(body);
                     } else {
                         reject(error);
@@ -26,18 +23,6 @@ class API {
                 });
             });
         }
-            if (options && options.crest) {
-                return new Promise((resolve, reject) => {
-                    request(path, data, (error, response, body) => {
-                        if (!error && response.statusCode === 200) {
-                            resolve(body);
-                        } else {
-                            reject(error);
-                        }
-                    });
-            });
-            }
-    }
 
     getCompetitionTable(id) {
         return this.sendRequest(`competitions/${id}/leagueTable`).then(response => {
@@ -48,13 +33,22 @@ class API {
         })
     }
 
-    getFixturesByCompetition(id) {
-        return this.sendRequest(`competitions/${id}/fixtures`).then(response => {
-            return JSON.parse(response);
-        }, error => {
-            console.error(emoji.get('confused'), chalk.red(` - Can't Get Data, So Sorry!`));
-            return error;            
-        })
+    getFixturesByCompetition(id, time) {
+        if (time) {
+            return this.sendRequest(`competitions/${id}/fixtures?timeFrame=${time}`).then(response => {
+                return JSON.parse(response);
+            }, error => {
+                console.error(emoji.get('confused'), chalk.red(` - Can't Get Data, So Sorry!`));
+                return error;            
+            })
+        } else { 
+            return this.sendRequest(`competitions/${id}/fixtures`).then(response => {
+                return JSON.parse(response);
+            }, error => {
+                console.error(emoji.get('confused'), chalk.red(` - Can't Get Data, So Sorry!`));
+                return error;            
+            })
+        }
     }
 
 }
