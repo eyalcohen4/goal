@@ -1,5 +1,8 @@
 import request from 'request';
+import emoji from 'node-emoji';
 import chalk from 'chalk';
+
+import fs from 'fs';
 
 class API {
     constructor() {
@@ -13,10 +16,11 @@ class API {
         if (!options) {
             return new Promise((resolve, reject) => { 
                 request(`${this.BASE_URL}/${path}`, data, (error, response, body) => {
+                    console.log(error, response)
                     if (!error && response.statusCode === 200) {
+                        console.log(body);
                         resolve(body);
                     } else {
-                        console.log(error);
                         reject(error);
                     }
                 });
@@ -28,7 +32,6 @@ class API {
                         if (!error && response.statusCode === 200) {
                             resolve(body);
                         } else {
-                            console.error(chalk.red(error));
                             reject(error);
                         }
                     });
